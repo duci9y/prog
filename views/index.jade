@@ -1,0 +1,32 @@
+extends layout
+
+block content
+	h1 Prog
+	p Welcome to Prog
+
+	form(action='/', method='POST')
+		div
+			label Bet
+			input(type='number', name='bet')
+		div
+			label Problem
+			select(name='problem')
+				option(value='0') 0
+				option(value='1') 1
+		div
+			label Language
+			select(name='lang')
+				option(value='c') C
+				option(value='cpp') C++
+				option(value='py') Python
+				option(value='js') JavaScript (Node.js)
+		div
+			label Code
+			textarea(name='code')
+		div
+			button(type='submit') Submit
+
+	if !!message
+		p= message
+	if !!attach
+		a(href='/' + attach) Attachments 
