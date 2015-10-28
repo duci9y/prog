@@ -3,7 +3,11 @@ extends layout
 block content
 	h1 Prog
 	p Welcome to Prog
-
+	
+	div
+		label Your score:
+		span=(newScore || user.codeScore)
+	
 	form(action='/', method='POST')
 		div
 			label Bet

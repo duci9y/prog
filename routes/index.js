@@ -1,6 +1,6 @@
 var express = require('express');
 var passport = require('passport');
-var Account = require('../account');
+var School = require('../models').School;
 var router = express.Router();
 var sys = require('sys');
 var fs = require('fs');
@@ -15,7 +15,7 @@ var testcases = [{
 },
 {
 	input: '',
-	output: '5777'
+	output: '5777\n'
 }];
 
 router.get('/login', function(req, res) {
@@ -23,7 +23,6 @@ router.get('/login', function(req, res) {
 	else res.render('login');
 });
 router.post('/login', function(req, res, next) {
-	console.log(req.body);
 	passport.authenticate('local', function(err, user, info) {
 		if (err) return res.render('login', { error: err });
 
@@ -38,9 +37,8 @@ router.post('/login', function(req, res, next) {
 
 router.all('*', function(req, res, next) {
 	res.locals.user = req.user;
-	// if (!req.user) res.redirect('/login');
-	// else next();
-	next();
+	if (!req.user) res.redirect('/login');
+	else next();
 });
 
 router.get('/', function(req, res, next) {
@@ -52,30 +50,41 @@ router.post('/', function(req, res) {
 		res.render('index', { message: 'Missing information.' });
 		return;
 	}
-
-	if (!req.user) req.user = { username: 'cyknights', codeScore: 20 };
-
+	if (parseInt(req.body.problem) < 0 || parseInt(req.body.problem) > 10) {
+		res.render('index', { message: 'Problem ' + req.body.problem + ' does not exist.' });
+		return;
+	}
+	if (req.user.codeCorrects.indexOf(req.body.problem) != -1) {
+		res.render('index', { message: 'You have already solved problem ' + req.body.problem + '.' });
+		return;
+	}
+	
 	var wd = path.join(__dirname, '../sandbox/' + req.user.username + '/' + req.body.problem);
 	var sourcename = req.body.problem + '.' + req.body.lang;
-	console.log(wd);
 
 	function finishedWithSuccess(success) {
-		var newScore = req.user.codeScore + parseInt(req.body.bet) * (success ? 1 : -1);
+		req.body.bet = Math.abs(parseInt(req.body.bet));
+		var newScore = req.user.codeScore + req.body.bet * (success ? 1 : -1);
 		var message = success ? ('Good job! +' + req.body.bet.toString() + '!') : ('Incorrect solution. -' + req.body.bet.toString() + '.');
-
-		Account.update({ username: req.user.username }, { $set: { codeScore: newScore }}, function(error, user) {
+		
+		var updates = {
+			$set: { codeScore: newScore }
+		};
+		if (success) updates.$push = { codeCorrects: req.body.problem };
+		
+		School.update({ username: req.user.username }, updates, function(error, user) {
 			if (error) {
 				console.log('error saving: ' + error);
 				res.render('index', { message: 'Error updating database. Contact event master.' });
 			}
-			else res.render('index', { message: message, success: success });
+			else res.render('index', { message: message, success: success, newScore: newScore.toString() }); // newScore.toString because 0 is falsy
 		});
 	}
 	function finishedWithError(runtime) {
 		var newScore = req.user.codeScore - parseInt(req.body.bet) / 2;
 		var message = (runtime ? 'Runtime' : 'Compilation') + ' error. You lose half your bet. Attached are some files for your debugging pleasure.';
 
-		Account.update({ username: req.user.username }, { $set: { codeScore: newScore }}, function(error, user) {
+		School.update({ username: req.user.username }, { $set: { codeScore: newScore }}, function(error, user) {
 			if (error) {
 				console.log('error saving: ' + error);
 				res.render('index', { message: 'Error updating database. Contact event master.' });
@@ -182,6 +191,17 @@ router.post('/', function(req, res) {
 				proceed();
 			})
 		})
+	});
+});
+
+router.get('/leaderboard', function(req, res, next) {
+	School.find().sort('-codeScore').select('name alias codeScore').exec(function(err, results) {
+		if (!err) {
+			res.render('leaderboard', { results: results });
+		} else {
+			console.log(err);
+			res.render('leaderboard', { error: new Error('Error displaying the leaderboard.') });
+		}
 	});
 });
 

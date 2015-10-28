@@ -34,12 +34,12 @@ app.use(passport.session());
 
 app.use('/', routes);
 
-var Account = require('./account');
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
+var School = require('./models').School;
+passport.use(new LocalStrategy(School.authenticate()));
+passport.serializeUser(School.serializeUser());
+passport.deserializeUser(School.deserializeUser());
 
-var mongodbURL = (process.env.DEBUG ? 'mongodb://localhost/passport' : null);
+var mongodbURL = (process.env.DEBUG ? 'mongodb://localhost/passport' : 'mongodb://default:Windoze8@ds039404.mongolab.com:39404/passport');
 
 if (!mongodbURL) mongodbURL = 'mongodb://localhost/passport';
 
