@@ -1,36 +1,54 @@
 extends layout
 
-block content
-	h1 Prog
-	p Welcome to Prog
-	
-	div
-		label Your score:
-		span=(newScore || user.codeScore)
-	
-	form(action='/', method='POST')
-		div
-			label Bet
-			input(type='number', name='bet')
-		div
-			label Problem
-			select(name='problem')
-				option(value='0') 0
-				option(value='1') 1
-		div
-			label Language
-			select(name='lang')
-				option(value='c') C
-				option(value='cpp') C++
-				option(value='py') Python
-				option(value='js') JavaScript (Node.js)
-		div
-			label Code
-			textarea(name='code')
-		div
-			button(type='submit') Submit
-
-	if !!message
-		p= message
-	if !!attach
-		a(href='/' + attach) Attachments 
+block content	
+	.row(style='height: 68px')
+		.col-md-12
+			h4 Welcome to Code
+	.row
+		.col-md-2
+			.panel.panel-default
+				.panel-body.text-center
+					h4 Score
+					h2= newScore || user.codeScore
+			.panel.panel-default
+				.panel-body.text-center
+					h4 Time Remaining
+					h2#countdown 2:30:00
+		.col-md-8
+			form.form-horizontal(action='/', method='POST')
+				fieldset
+					.form-group
+						label.col-md-2.control-label(for='problem') Problem
+						.col-md-8
+							select.form-control#problem(name='problem')
+								option(value='0') 0
+								option(value='1') 1
+					.form-group
+						label.col-md-2.control-label(for='lang') Language
+						.col-md-8
+							select.form-control#lang(name='lang')
+								option(value='c') C
+								option(value='cpp') C++
+								option(value='py') Python
+								option(value='js') JavaScript (Node.js)
+					.form-group
+						label.col-md-2.control-label(for='bet') Bet
+						.col-md-8
+							input.form-control#bet(type='number', name='bet', value=user.codeScore, min=1, max=user.codeScore)
+					.form-group
+						label.col-md-2.control-label(for='code') Code
+						.col-md-8
+							textarea.form-control#code(name='code', rows=12)
+					.form-group
+						label.col-md-2.control-label(for='submit')
+						.col-md-8
+							button.btn.btn-primary#submit(type='submit') Submit
+			if !!error
+				.row
+					.col-md-8.col-md-offset-2
+						.alert.alert-danger= error.message
+				if !!attach
+					a(href='/' + attach) Attachments
+	script.
+		countdown = parseInt("#{countdown}")
+	script(src='/javascripts/countdown.js')

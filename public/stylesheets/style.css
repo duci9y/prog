@@ -1,8 +1,193 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	font: "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.navbar-default, .mobile-nav {
+	font-size: 12px;
+}
+
+@media only screen and (min-width : 768px) {
+	.navbar-default {
+		padding: 20px;
+	}
+}
+
+.navbar-default .navbar-nav > li > a,
+.mobile-nav-item > a {
+  text-transform: uppercase;
+}
+
+.mobile-nav {
+	display: flex;
+	width: 100%;
+}
+.mobile-nav-item {
+	flex-grow: 1;
+	text-align: center;
+}
+.mobile-nav-item > a {
+	text-decoration: none;
+}
+@media only screen and (min-width: 768px) {
+	.mobile-nav {
+		display: none;
+	}
+}
+
+.login-form, .qbody {
+	margin-top: 5%;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+}
+
+.login-form {
+	margin-top: 20%;
+	padding-bottom: 4px;
+}
+
+.login-form button.btn {
+	width: 100%;
+}
+
+input.form-control[type='text'],
+input.form-control[type='password'],
+input.form-control[type='email'],
+input.form-control[type='tel'] {
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
+@media only screen and (max-width: 768px) {
+	label:empty {
+		display: none;
+	}
+}
+
+.incorrect {
+	margin: auto;
+	margin-top: 16px;
+	text-align: center;
+}
+
+.qbody {
+	text-align: center;
+}
+.qbody > pre {
+	display:inline-block;
+	border-radius: 0;
+	text-align: left;
+}
+
+.qtitle {
+	margin: 16px;
+}
+
+.qvideo {
+	margin: 0px;
+	margin-bottom: 16px;
+}
+
+.answerbox {
+	margin-top: 32px;
+	margin-bottom: 16px;
+}
+
+.rules {
+	margin-top: 32px;
+}
+.rules li {
+	margin: 0.4em;
+}
+
+.notfound {
+	width: 80%;
+	text-align: center;
+	margin: auto;
+	margin-top: 15%;
+}
+.cool {
+	font-size: 5em;
+	margin: auto;
+}
+.notfound p {
+	margin: 32px;
+	font-size: 1.5em;
+}
+
+table.table {
+	margin-top: 32px;
+}
+
+/* Custom Bootstrap components */
+
+.btn-custom {
+  color: #FFFFFF;
+  background-color: #55BB00;
+  border-color: #55BB00;
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active,
+.btn-custom.active {
+  color: #FFFFFF;
+  background-color: #4a0;
+  border-color: #55BB00;
+}
+
+.navbar-default {
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+.navbar-default .navbar-brand {
+  color: #111111;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+  color: #55bb00;
+}
+.navbar-default .navbar-text {
+  color: #111111;
+}
+.navbar-default .navbar-nav > li > a, .mobile-nav-item > a {
+  color: #111111;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus,
+.mobile-nav-item > a:hover,
+.mobile-nav-item > a:focus {
+  color: #55bb00;
+}
+.navbar-default .navbar-toggle {
+  border-color: #ffffff;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  background-color: #ffffff;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #111111;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+  border-color: #111111;
+}
+.navbar-default .navbar-link {
+  color: #111111;
+}
+.navbar-default .navbar-link:hover {
+  color: #55bb00;
+}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #111111;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #55bb00;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #55bb00;
+    background-color: #ffffff;
+  }
 }

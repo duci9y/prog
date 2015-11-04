@@ -1,7 +1,25 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+	head
+		title Code
+		meta(charset='utf8')
+		link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		block scripts
+	body
+		.navbar.navbar-default
+			.container
+				.navbar-header
+					a.navbar-brand(href='/') Code
+				.collapse.navbar-collapse#nav-collapse
+					ul.nav.navbar-nav.navbar-right
+						if !!user
+							li: a(href='/') Play
+						else
+							li: a(href='/login') Login
+						li: a(href='/rules') Rules
+						li: a(href='/leaderboard') Leaderboard
+						if !!user
+							li: a(href='/logout') Logout
+		.container
+			block content

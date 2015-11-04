@@ -18,12 +18,23 @@ var testcases = [{
 	output: '5777\n'
 }];
 
+var countdown = 9000;
+
+router.get('/armageddon', function (req, res) {
+	if (countdown == 9000) setInterval(function() {
+		countdown--;
+	}, 999);
+	res.send('Started.');
+});
+
 router.get('/login', function(req, res) {
-	if (req.user) res.redirect('/');
+	if (countdown == 9000) res.redirect('/rules');
+	else if (req.user) res.redirect('/');
 	else res.render('login');
 });
 router.post('/login', function(req, res, next) {
-	passport.authenticate('local', function(err, user, info) {
+	if (countdown == 9000) res.redirect('/rules');
+	else passport.authenticate('local', function(err, user, info) {
 		if (err) return res.render('login', { error: err });
 
 		if (!user) return res.render('login', { error: info });
@@ -35,8 +46,18 @@ router.post('/login', function(req, res, next) {
 	})(req, res, next);
 });
 
+router.get('/logout', function(req, res) {
+	req.logout();
+	res.redirect('/');
+});
+
+router.get('/rules', function(req, res) {
+	res.render('rules', { });
+});
+
 router.all('*', function(req, res, next) {
 	res.locals.user = req.user;
+	res.locals.countdown = countdown;
 	if (!req.user) res.redirect('/login');
 	else next();
 });
@@ -46,19 +67,30 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res) {
-	if (!req.body.problem || !req.body.lang || !req.body.code) {
-		res.render('index', { message: 'Missing information.' });
+	function fail(msg) {
+		res.render('index', { error: new Error(msg), success: false });
+	}
+	if (!req.body.problem || !req.body.lang || !req.body.code || !req.body.bet) {
+		fail('Missing information.');
 		return;
 	}
 	if (parseInt(req.body.problem) < 0 || parseInt(req.body.problem) > 10) {
-		res.render('index', { message: 'Problem ' + req.body.problem + ' does not exist.' });
+		fail('Problem ' + req.body.problem + ' does not exist.');
 		return;
 	}
 	if (req.user.codeCorrects.indexOf(req.body.problem) != -1) {
-		res.render('index', { message: 'You have already solved problem ' + req.body.problem + '.' });
+		fail('You have already solved problem ' + req.body.problem + '.');
 		return;
 	}
-	
+	if (req.user.codeScore < parseInt(req.body.bet)) {
+		fail('Your bet cannot exceed your current score.');
+		return;
+	}
+	if (countdown <= 0) {
+		fail('Sorry, you ran out of time.');
+		return;
+	}
+
 	var wd = path.join(__dirname, '../sandbox/' + req.user.username + '/' + req.body.problem);
 	var sourcename = req.body.problem + '.' + req.body.lang;
 
@@ -66,16 +98,16 @@ router.post('/', function(req, res) {
 		req.body.bet = Math.abs(parseInt(req.body.bet));
 		var newScore = req.user.codeScore + req.body.bet * (success ? 1 : -1);
 		var message = success ? ('Good job! +' + req.body.bet.toString() + '!') : ('Incorrect solution. -' + req.body.bet.toString() + '.');
-		
+
 		var updates = {
 			$set: { codeScore: newScore }
 		};
 		if (success) updates.$push = { codeCorrects: req.body.problem };
-		
+
 		School.update({ username: req.user.username }, updates, function(error, user) {
 			if (error) {
 				console.log('error saving: ' + error);
-				res.render('index', { message: 'Error updating database. Contact event master.' });
+				fail('Error updating database. Contact event master.');
 			}
 			else res.render('index', { message: message, success: success, newScore: newScore.toString() }); // newScore.toString because 0 is falsy
 		});

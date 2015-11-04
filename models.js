@@ -48,7 +48,8 @@ var School = new Schema({
 });
 
 School.plugin(passportLocalMongoose, {
-    usernameLowerCase: true
+    usernameLowerCase: true,
+    digestAlgorithm: 'sha1'
 });
 
 module.exports = {

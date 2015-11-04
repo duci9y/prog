@@ -1,19 +1,24 @@
 extends layout
 
 block content
-	if !!results
-		table.table
-			tr
-				th.text-center Rank
-				th Name
-				th.text-center Score
-			each result, index in results
-				tr
-					td.text-center= index + 1
-					td
-						if !!result.alias
-							= result.alias
-							span.text-muted.small= ' — ' + result.name
-						else
-							= result.name
-					td.text-center= result.codeScore
+	.row
+		.col-md-8.col-md-offset-2
+			if !!error
+				.alert.alert-danger
+					strong Error displaying the leaderboard.
+			if !!results
+				table.table
+					tr
+						th.text-center Rank
+						th Name
+						th.text-center Level
+					each result, index in results
+						tr
+							td.text-center= index + 1
+							td
+								if !!result.alias
+									= result.alias
+									span.text-muted.small= ' — ' + result.name
+								else
+									= result.name
+							td.text-center= result.codeScore
