@@ -30,21 +30,33 @@ var School = new Schema({
     participants: [{
         name: String,
         eventName: {
-            type: String,
-            validate: function(v) {
-                return (v == 'code' || v == 'play' || v == 'style' || v == 'stroke' || v == 'capture' || v == 'mix' || v == 'ask')
-            }
+          type: String,
+          validate: function(v) {
+              return (v == 'code' || v == 'play' || v == 'style' || v == 'stroke' || v == 'capture' || v == 'mix' || v == 'ask')
+          }
         }
     }],
     scores: [{
     	eventName: {
-            type: String,
-            validate: function(v) {
-                return (v == 'code' || v == 'play' || v == 'style' || v == 'stroke' || v == 'capture' || v == 'mix' || v == 'ask')
-            }
+        type: String,
+        validate: function(v) {
+            return (v == 'code' || v == 'play' || v == 'style' || v == 'stroke' || v == 'capture' || v == 'mix' || v == 'ask')
+        }
+      },
+      value: Number
+    }],
+    prelims: {
+      type: [{
+        eventName: {
+          type: String,
+          validate: function(v) {
+            return (v == 'style' || v == 'stroke' || v == 'capture' || v == 'mix')
+          }
         },
-        value: Number
-    }]
+        url: String
+      }],
+      default: []
+    }
 });
 
 School.plugin(passportLocalMongoose, {

@@ -1,0 +1,8 @@
+extends index
+
+block main
+	.panel.panel-default
+		.panel-body
+			h2= 'Problem ' + index.toString()
+			h4= problem.title
+			!{problem.text}

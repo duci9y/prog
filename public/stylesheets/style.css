@@ -65,6 +65,10 @@ input.form-control[type='tel'] {
 	}
 }
 
+.light {
+	font-weight: 200;
+}
+
 .incorrect {
 	margin: auto;
 	margin-top: 16px;
@@ -101,7 +105,7 @@ input.form-control[type='tel'] {
 	margin: 0.4em;
 }
 
-.notfound {
+.hero {
 	width: 80%;
 	text-align: center;
 	margin: auto;
@@ -111,7 +115,7 @@ input.form-control[type='tel'] {
 	font-size: 5em;
 	margin: auto;
 }
-.notfound p {
+.hero p {
 	margin: 32px;
 	font-size: 1.5em;
 }
@@ -120,12 +124,20 @@ table.table {
 	margin-top: 32px;
 }
 
+a.incomplete {
+	color: #f11;
+}
+
+a.complete {
+	color: #5b0;
+}
+
 /* Custom Bootstrap components */
 
 .btn-custom {
   color: #FFFFFF;
-  background-color: #55BB00;
-  border-color: #55BB00;
+  background-color: #5b0;
+  border-color: #5b0;
 }
 
 .btn-custom:hover,
@@ -134,7 +146,7 @@ table.table {
 .btn-custom.active {
   color: #FFFFFF;
   background-color: #4a0;
-  border-color: #55BB00;
+  border-color: #5b0;
 }
 
 .navbar-default {
@@ -145,7 +157,7 @@ table.table {
   color: #111111;
 }
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
-  color: #55bb00;
+  color: #5b0;
 }
 .navbar-default .navbar-text {
   color: #111111;
@@ -157,7 +169,7 @@ table.table {
 .navbar-default .navbar-nav > li > a:focus,
 .mobile-nav-item > a:hover,
 .mobile-nav-item > a:focus {
-  color: #55bb00;
+  color: #5b0;
 }
 .navbar-default .navbar-toggle {
   border-color: #ffffff;
@@ -176,7 +188,7 @@ table.table {
   color: #111111;
 }
 .navbar-default .navbar-link:hover {
-  color: #55bb00;
+  color: #5b0;
 }
 
 @media (max-width: 767px) {
@@ -184,10 +196,10 @@ table.table {
     color: #111111;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #55bb00;
+    color: #5b0;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
-    color: #55bb00;
+    color: #5b0;
     background-color: #ffffff;
   }
 }

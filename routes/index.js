@@ -9,7 +9,7 @@ var spawn = require('child_process').spawn;
 var AdmZip = require('adm-zip');
 var randomstring = require('randomstring');
 
-var testcases = [{
+var problems = [{
 	input: 'testcases\n',
 	output: 'testcases\n'
 },
@@ -51,24 +51,35 @@ router.get('/logout', function(req, res) {
 	res.redirect('/');
 });
 
+router.all('*', function(req, res, next) {
+	res.locals.user = req.user;
+	res.locals.countdown = countdown;
+	res.locals.problems = problems;
+});
+
 router.get('/rules', function(req, res) {
 	res.render('rules', { });
 });
 
 router.all('*', function(req, res, next) {
-	res.locals.user = req.user;
-	res.locals.countdown = countdown;
 	if (!req.user) res.redirect('/login');
 	else next();
 });
 
+router.get('/problem/:index', function(req, res) {
+	var index = req.params.index;
+	var p = problems[parseInt(index)];
+	if (p) res.render('problem', { index: index, problem: p });
+	else res.redirect('/problem/0');
+});
+
 router.get('/', function(req, res, next) {
-	res.render('index', { });
+	res.render('play', { });
 });
 
 router.post('/', function(req, res) {
 	function fail(msg) {
-		res.render('index', { error: new Error(msg), success: false });
+		res.render('play', { message: msg, success: false });
 	}
 	if (!req.body.problem || !req.body.lang || !req.body.code || !req.body.bet) {
 		fail('Missing information.');
@@ -109,7 +120,7 @@ router.post('/', function(req, res) {
 				console.log('error saving: ' + error);
 				fail('Error updating database. Contact event master.');
 			}
-			else res.render('index', { message: message, success: success, newScore: newScore.toString() }); // newScore.toString because 0 is falsy
+			else res.render('play', { message: message, success: success, newScore: newScore.toString() }); // newScore.toString because 0 is falsy
 		});
 	}
 	function finishedWithError(runtime) {
@@ -119,14 +130,14 @@ router.post('/', function(req, res) {
 		School.update({ username: req.user.username }, { $set: { codeScore: newScore }}, function(error, user) {
 			if (error) {
 				console.log('error saving: ' + error);
-				res.render('index', { message: 'Error updating database. Contact event master.' });
+				res.render('play', { message: 'Error updating database. Contact event master.' });
 			}
 			else {
 				var zip = new AdmZip();
 				var zipName = randomstring.generate(5) + '.zip';
 				zip.addLocalFolder(wd);
 				zip.writeZip(path.join(__dirname, '../public/' + zipName));
-				res.render('index', { message: message, success: false, attach: zipName });
+				res.render('play', { message: message, success: false, attach: zipName });
 			}
 		});
 	}
@@ -158,13 +169,14 @@ router.post('/', function(req, res) {
 			if (code != 0) {
 				finishedWithError(true);
 			}
-			if (output == testcases[parseInt(req.body.problem)].output) {
+			if (output == problems[parseInt(req.body.problem)].output) {
 				finishedWithSuccess(true);
 			}
 			else finishedWithSuccess(false);
 		});
 
-		exec.stdin.write(testcases[parseInt(req.body.problem)].input);
+		var i = problems[parseInt(req.body.problem)].input;
+		if (i) exec.stdin.write(i);
 	}
 
 	function proceed() {

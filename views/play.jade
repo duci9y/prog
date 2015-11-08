@@ -1,0 +1,31 @@
+extends index
+
+block main
+	form.form-horizontal(action='/', method='POST')
+		fieldset
+			.form-group
+				label.col-md-2.control-label(for='problem') Problem
+				.col-md-8
+					select.form-control#problem(name='problem')
+						option(value='0') 0
+						option(value='1') 1
+			.form-group
+				label.col-md-2.control-label(for='lang') Language
+				.col-md-8
+					select.form-control#lang(name='lang')
+						option(value='c') C
+						option(value='cpp') C++
+						option(value='py') Python
+						option(value='js') JavaScript (Node.js)
+			.form-group
+				label.col-md-2.control-label(for='bet') Bet
+				.col-md-8
+					input.form-control#bet(type='number', name='bet', value=newScore || user.codeScore, min=1, max=newScore || user.codeScore)
+			.form-group
+				label.col-md-2.control-label(for='code') Code
+				.col-md-8
+					textarea.form-control#code(name='code', rows=12)
+			.form-group
+				label.col-md-2.control-label(for='submit')
+				.col-md-8
+					button.btn.btn-primary#submit(type='submit') Submit
