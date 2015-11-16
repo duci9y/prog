@@ -40,7 +40,7 @@ var School = new Schema({
     	eventName: {
         type: String,
         validate: function(v) {
-            return (v == 'code' || v == 'play' || v == 'style' || v == 'stroke' || v == 'capture' || v == 'mix' || v == 'ask')
+          return (v == 'style' || v == 'stroke' || v == 'capture' || v == 'mix' || v == 'ask')
         }
       },
       value: Number

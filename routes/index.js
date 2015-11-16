@@ -55,6 +55,7 @@ router.all('*', function(req, res, next) {
 	res.locals.user = req.user;
 	res.locals.countdown = countdown;
 	res.locals.problems = problems;
+	next();
 });
 
 router.get('/rules', function(req, res) {
@@ -64,13 +65,6 @@ router.get('/rules', function(req, res) {
 router.all('*', function(req, res, next) {
 	if (!req.user) res.redirect('/login');
 	else next();
-});
-
-router.get('/problem/:index', function(req, res) {
-	var index = req.params.index;
-	var p = problems[parseInt(index)];
-	if (p) res.render('problem', { index: index, problem: p });
-	else res.redirect('/problem/0');
 });
 
 router.get('/', function(req, res, next) {

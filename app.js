@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
+var harp = require('harp');
 
 var routes = require('./routes/index');
 
@@ -36,6 +37,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', routes);
+app.use(harp.mount(path.join(__dirname, 'public')));
 
 var School = require('./models').School;
 passport.use(new LocalStrategy(School.authenticate()));
