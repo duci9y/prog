@@ -141,6 +141,10 @@ router.post('/', function(req, res) {
 
 		var output = '';
 		var error = '';
+		exec.stdin.on('error', function(err) {
+			error = 'stdin was not read.';
+			output = '';
+		})
 		exec.stdout.on('data', function(data) {
 			output += data;
 		});
