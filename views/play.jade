@@ -7,8 +7,8 @@ block main
 				label.col-md-2.control-label(for='problem') Problem
 				.col-md-8
 					select.form-control#problem(name='problem')
-						option(value='0') 0
-						option(value='1') 1
+						each problem, index in problems
+							option(value=index)= index
 			.form-group
 				label.col-md-2.control-label(for='lang') Language
 				.col-md-8

@@ -13,14 +13,10 @@ html
 					a.navbar-brand(href='/') Code
 				.collapse.navbar-collapse#nav-collapse
 					ul.nav.navbar-nav.navbar-right
-						if !!user
-							li: a(href='/') Play
-						else
-							li: a(href='/login') Login
+						li: a(href='/') Play
 						li: a(href='/rules') Rules
 						li: a(href='/leaderboard') Leaderboard
-						if !!user
-							li: a(href='/logout') Logout
+						li: a(href='/logout') Logout
 		.container
 			.row
 				.col-md-8.col-md-offset-2

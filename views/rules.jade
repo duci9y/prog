@@ -3,5 +3,14 @@ extends layout
 block content
   .row
     .col-md-8.col-md-offset-2
+      h3 Instructions
       ol.rules
-        li You have 2.5 hours to complete. 
+        li You have #[strong 2 hours 30 minutes] to solve as many problems as you can.
+        li Solutions are to be submitted using this interface. Though the server has been extensively tested, in case you believe an evaluation is incorrect, you may ask any one of us to check your program manually.
+        li Problems have been borrowed from Code Chef. Only problems with greater than 100 solutions were chosen. This is to ensure that the problem statements are clearly understood. Therefore, we will not entertain any queries you may have about the problems.
+        li You begin with 20 points. For each submission, you must bet a number of points equal to or less than your current score. If your solution is correct, the points you bet are added to your score. If you are incorrect, the same number of points is deducted from your score. If your code encounters a runtime/compilation error, you lose half your bet.
+        li #[strong Bet wisely.] You are out of the competition if your score goes down to zero.
+        li #[strong Test your code locally before submission.] Once submitted and scored, you cannot undo anything.
+        li #[strong C/C++ users:] Append a #[code \n] to the #[strong end] of #[strong all] your output.
+        li #[strong Python/JS users:] #[code print] and #[code console.log] already add newlines. #[code process.stdout.write] and #[code sys.stdout.write] do not.
+        li #[strong Your code must return 0 on exit.] If it does not, the solution may be judged incorrect or may show a runtime/compilation error, even though it might be correct.
