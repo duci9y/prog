@@ -195,6 +195,12 @@ router.post('/', function(req, res) {
 		});
 
 		exec.on('close', function(code) {
+			if (code == null) {
+				code = 10;
+				fs.writeFile(path.join(wd, 'stderr.log'), error + '\n\nsubmission timed out', function(err) {
+					if (err) console.log(err);
+				});
+			}
 			console.log('submission exited with code ' + code.toString());
 			if (code != 0) {
 				finishedWithError(true);
@@ -204,6 +210,10 @@ router.post('/', function(req, res) {
 			}
 			else finishedWithSuccess(false);
 		});
+		
+		setTimeout(function() {
+			exec.kill('SIGKILL');
+		}, 6000);
 
 		var i = problems[parseInt(req.body.problem)].input;
 		if (i) exec.stdin.write(i);
